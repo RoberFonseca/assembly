@@ -1,0 +1,33 @@
+; This program takes two numbers and calculate their integral average
+format PE console
+entry start
+
+include 'win32a.inc' 
+
+; ===============================================
+section '.text' code readable executable
+
+start:
+    ; The program begins here:
+
+	call	read_hex
+	mov	ebx,eax
+	
+	mov	edx,0	
+
+	call	read_hex
+	mov	ecx,2
+	
+	add	eax,ebx
+	div	ecx
+
+    ; Return the value
+
+	call	print_eax	
+
+    ; Exit the process:
+	push	0
+	call	[ExitProcess]
+
+include 'training.inc'
+

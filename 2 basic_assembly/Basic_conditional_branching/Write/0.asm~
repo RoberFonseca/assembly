@@ -1,0 +1,43 @@
+format PE console
+entry start
+
+include 'win32a.inc' 
+
+; ===============================================
+section '.text' code readable executable
+
+start:
+	call	read_hex
+; calculate 2n+1
+	mov	ebx,2
+	mul	ebx
+	inc	eax
+	mov	ecx,0
+; loop that sums odds
+lp:
+	mov	edx,0
+	mov	esi,2
+	div	esi
+	inc	edx
+	dec	edx
+	jz	dec_eax_and_loop
+	add	ecx,eax
+	dec     eax
+	jnz	lp
+	jmp     g2
+
+dec_eax_and_loop:
+	dec	eax
+	jmp	lp
+
+
+g2:
+	mov	eax,ecx
+	call	print_eax
+	
+    ; Exit the process:
+	push	0
+	call	[ExitProcess]
+
+include 'training.inc'
+
