@@ -1,0 +1,51 @@
+format PE console
+entry start
+
+include 'win32a.inc' 
+
+; ===============================================
+section '.text' code readable executable
+
+;	Write a program that takes a number n as input, and prints back to the
+;	console all the primes that are larger than 1 but not larger than n.
+
+start:
+	call	read_hex 
+	mov	edx,0	 	
+	mov	ebx,1	 
+	mov	ecx,eax 
+
+l1:
+	mov	esi,ecx	 
+	inc	ebx	 
+	mov	edi,ebx
+	mov	eax,ebx 
+	dec	edi	
+
+checkprime:
+	dec	edi
+	jz	isprime
+	inc	edi
+	div	edi
+	mov	eax,ebx
+	inc	edx
+	dec	edx	
+	jz	f1
+	mov	edx,0
+	dec	edi
+	jnz	checkprime
+	
+isprime:
+	mov	eax,ebx
+	call	print_eax			
+
+f1:
+	sub	esi,ebx
+	jnz	l1
+
+f2:
+    ; Exit the process:
+	push	0
+	call	[ExitProcess]
+
+include 'training.inc'

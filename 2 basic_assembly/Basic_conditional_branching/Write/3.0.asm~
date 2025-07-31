@@ -1,0 +1,45 @@
+format PE console
+entry start
+
+include 'win32a.inc' 
+
+; ===============================================
+section '.text' code readable executable
+
+;	Write a program that takes a number m as input, and prints back 1 to the
+;	console if m is a prime number. Otherwise, it prints 0.
+
+start:
+	call	read_hex
+	mov	edx,0
+	mov	ebx,eax
+	mov	esi,eax
+	dec	ebx	
+
+checkprime:
+	mov	eax,esi
+	mov	ecx,ebx
+	dec	ecx	
+	jz	isprime
+	div	ebx
+	inc	edx
+	dec	edx
+	jz	isnotprime
+	dec	ebx
+	jnz	checkprime
+
+isprime:
+	mov	eax,1
+	call	print_eax
+	jmp	f
+
+isnotprime:
+	mov	eax,0
+	call	print_eax
+
+f:
+    ; Exit the process:
+	push	0
+	call	[ExitProcess]
+
+include 'training.inc'
