@@ -1,0 +1,62 @@
+format PE console
+entry start
+
+include 'win32a.inc' 
+
+; ===============================================
+section '.text' code readable executable
+;Write a program that takes the number n as input, and prints back all the
+;triples (a,b,c), such that a^2 + b^2 = c^2. 
+start:
+	call	read_hex
+	mov	edi,eax
+	mov	ebx,0
+	mov	ecx,0
+	mov	esi,0
+	mov	ebp,0
+while_a:
+	cmp	ebx,edi
+	jae	end_while_a
+while_b:
+	cmp	ecx,edi	
+	jae	end_while_b
+while_c:
+	cmp	esi,edi
+	jae	end_while_c
+	mov	edx,0
+	mov	eax,ebx
+	mul	ebx
+	mov	ebp,eax
+	mov	edx,0
+	mov	eax,ecx
+	mul	ecx
+	add	ebp,eax
+	mov	edx,0
+	mov	eax,esi
+	mul	esi
+	cmp	ebp,eax
+	jnz	cond_not_meet
+	mov	eax,ebx
+	call	print_eax
+	mov	eax,ecx
+	call	print_eax
+	mov	eax,esi
+	call	print_eax
+cond_not_meet:		
+	inc	esi
+	jmp	while_c
+end_while_c:
+	mov	esi,0
+	inc	ecx
+	jmp	while_b
+end_while_b:
+	mov	ecx,0
+	inc	ebx
+	jmp	while_a
+end_while_a:
+   ; Exit the process:
+	push	0
+	call	[ExitProcess]
+
+include 'training.inc'
+
